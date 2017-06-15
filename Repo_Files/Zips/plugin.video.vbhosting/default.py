@@ -15,7 +15,7 @@ fanart       = xbmc.translatePath(os.path.join('special://home/addons/' + userin
 vod_url      = '%s:%s/enigma2.php?username=%s&password=%s&type=get_vod_categories'%(userinfo.host,userinfo.port,username,password)
 tv_url       = '%s:%s/enigma2.php?username=%s&password=%s&type=get_vod_scategories&scat_id=21'%(userinfo.host,userinfo.port,username,password)
 panel_api    = '%s:%s/panel_api.php?username=%s&password=%s'%(userinfo.host,userinfo.port,username,password)
-play_url     = '%s:%s/live/%s/%s/'%(userinfo.host,userinfo.port,username,password)
+play_url     = '%s:%s/movie/%s/%s/'%(userinfo.host,userinfo.port,username,password)
 
 advanced_settings           =  xbmc.translatePath('special://home/addons/'+userinfo.addon_id+'/resources/advanced_settings')
 advanced_settings_target    =  xbmc.translatePath(os.path.join('special://home/userdata','advancedsettings.xml'))
@@ -148,15 +148,16 @@ def search():
 		return
 	xbmc.log(str(text))
 	open = tools.OPEN_URL(panel_api)
-	all_chans = tools.regex_get_all(open,'{"num":','epg')
+	all_chans = tools.regex_get_all(open,'{"num":','}')
 	for a in all_chans:
 		name = tools.regex_from_to(a,'name":"','"').replace('\/','/')
 		url  = tools.regex_from_to(a,'"stream_id":"','"')
+		format = tools.regex_from_to(a,'container_extension":"','"')
 		thumb= tools.regex_from_to(a,'stream_icon":"','"').replace('\/','/')
 		if text in name.lower():
-			tools.addDir(name,play_url+url+'.ts',4,thumb,fanart,'')
+			tools.addDir(name,play_url+url+'.'+format,4,thumb,fanart,'')
 		elif text not in name.lower() and text in name:
-			tools.addDir(name,play_url+url+'.ts',4,thumb,fanart,'')
+			tools.addDir(name,play_url+url+'.'+format,4,thumb,fanart,'')
 			
 def searchdialog():
 	search = control.inputDialog(heading='Search '+userinfo.addon_name+':')
