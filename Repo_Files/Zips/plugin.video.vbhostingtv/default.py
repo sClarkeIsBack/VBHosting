@@ -493,7 +493,7 @@ def correctPVR():
 	IPTVon 	   = '{"jsonrpc":"2.0","method":"Addons.SetAddonEnabled","params":{"addonid":"pvr.iptvsimple","enabled":true},"id":1}'
 	nulldemo   = '{"jsonrpc":"2.0","method":"Addons.SetAddonEnabled","params":{"addonid":"pvr.demo","enabled":false},"id":1}'
 	loginurl   = user.host+':'+user.port+"/get.php?username=" + username_text + "&password=" + password_text + "&type=m3u_plus&output=ts"
-	EPGurl     = user.host+':'+user.port+"/xmltv.php?username=" + username_text + "&password=" + password_text
+	EPGurl     = 'https://megaiptv.co/epg/guide.xml'
 
 	xbmc.executeJSONRPC(jsonSetPVR)
 	xbmc.executeJSONRPC(IPTVon)
